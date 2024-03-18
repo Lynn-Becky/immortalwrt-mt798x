@@ -64,13 +64,13 @@
 		reset {
 			label = "reset";
 			linux,code = <KEY_RESTART>;
-			gpios = <0x0d 0x01 0x01>;
+			gpios = <&pio 1 GPIO_ACTIVE_LOW>;
 		};
 
 		wps {
 			label = "wps";
 			linux,code = <BTN_9>;
-			gpios = <0x0d 0x00 0x01>;
+			gpios = <&pio 0 GPIO_ACTIVE_LOW>;
 		};
 	};
 

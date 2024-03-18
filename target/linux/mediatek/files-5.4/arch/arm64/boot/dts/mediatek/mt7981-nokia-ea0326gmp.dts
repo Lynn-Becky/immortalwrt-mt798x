@@ -78,19 +78,14 @@
 	status = "okay";
 
 	spi_nand: spi_nand@0 {
-		#address-cells = <1>;
-		#size-cells = <1>;
-		compatible = "spi-nand";
-		reg = <0>;
-		spi-max-frequency = <52000000>;
-		spi-tx-bus-width = <4>;
-		spi-rx-bus-width = <4>;
-		spi-cal-enable;
-		spi-cal-mode = "read-data";
-		spi-cal-datalen = <7>;
-		spi-cal-data = /bits/ 8 <0x53 0x50 0x49 0x4E 0x41 0x4E 0x44>; /* 'SPINAND' */
-		spi-cal-addrlen = <5>;
-		spi-cal-addr = /bits/ 32 <0x0 0x0 0x0 0x0 0x0>;
+			#address-cells = <0x01>;
+			#size-cells = <0x01>;
+			compatible = "spi-nand";
+			reg = <0x00>;
+			spi-max-frequency = <0x3197500>;
+			spi-tx-buswidth = <0x04>;
+			spi-rx-buswidth = <0x04>;
+			phandle = <0x1f>;
 	};
 };
 
@@ -103,14 +98,14 @@
 
 		conf-pu {
 			pins = "SPI0_CS", "SPI0_HOLD", "SPI0_WP";
-			drive-strength = <MTK_DRIVE_8mA>;
-			bias-pull-up = <MTK_PUPD_SET_R1R0_11>;
+			drive-strength = <0x08>;
+			bias-pull-up = <0x67>;
 		};
 
 		conf-pd {
 			pins = "SPI0_CLK", "SPI0_MOSI", "SPI0_MISO";
-			drive-strength = <MTK_DRIVE_8mA>;
-			bias-pull-down = <MTK_PUPD_SET_R1R0_11>;
+			drive-strength = <0x08>;
+			bias-pull-down = <0x67>;
 		};
 	};
 };
