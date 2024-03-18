@@ -14,7 +14,8 @@
 		compatible = "generic,nmbm";
 		#address-cells = <1>;
 		#size-cells = <1>;
-		lower-mtd-device = <0x1f>;
+
+		lower-mtd-device = <&spi_nand>;
 		forced-create;
 
 		partitions {
