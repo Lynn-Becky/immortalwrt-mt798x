@@ -95,15 +95,17 @@
 
 	nmbm_spim_nand {
 		compatible = "generic,nmbm";
-		#address-cells = <0x01>;
-		#size-cells = <0x01>;
-		lower-mtd-device = <0x1f>;
+
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		lower-mtd-device = <&spi_nand>;
 		forced-create;
 
 		partitions {
 			compatible = "fixed-partitions";
-			#address-cells = <0x01>;
-			#size-cells = <0x01>;
+			#address-cells = <1>;
+			#size-cells = <1>;
 
 			partition@0 {
 				label = "BL2";
