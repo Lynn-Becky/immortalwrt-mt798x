@@ -9,10 +9,10 @@
 	#size-cells = <0x02>
 
 	aliases {
-	led-boot = &power_led;
-	led-failsafe = &power_led;
-	led-running = &lan_led;
-	led-upgrade = &lan_led;
+	   led-boot = &power_led;
+	   led-failsafe = &power_led;
+	   led-running = &lan_led;
+	   led-upgrade = &lan_led;
 	};
 
 	cpus {
