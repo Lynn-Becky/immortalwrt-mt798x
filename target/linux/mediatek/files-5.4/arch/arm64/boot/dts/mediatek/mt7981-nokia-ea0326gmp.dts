@@ -11,10 +11,10 @@
 	compatible = "cmcc,a10", "mediatek,mt7981";
 
 	aliases {
-		led-boot = &boot_led;
-		led-failsafe = &boot_led;
-		led-running = &running_led;
-		led-upgrade = &running_led;
+		led-boot = &power_led;
+		led-failsafe = &power_led;
+		led-running = &lan_led;
+		led-upgrade = &lan_led;
 	};
 
 	chosen {
@@ -44,41 +44,41 @@
 	leds {
 		compatible = "gpio-leds";
 
-		led0 {
+		power_led: led0 {
 			label = "Power";
 			gpios = <0x0d 0x04 0x01>;
 			function = "power";
 			default-state = "on";
 		};
 
-		led1 {
+		internet_led: led1 {
 			label = "Internet";
 			gpios = <0x0d 0x05 0x01>;
 			function = "wan";
 			default-state = "off";
 		};
 
-		led2 {
+		wan_led: led2 {
 			label = "WanErr";
 			gpios = <0x0d 0x06 0x01>;
 			default-state = "off";
 		};
 
-		led3 {
+		lan_led: led3 {
 			label = "Lan";
 			gpios = <0x0d 0x07 0x01>;
 			function = "lan";
 			default-state = "off";
 		};
 
-		led4 {
+		wifi_led: led4 {
 			label = "Wifi";
 			gpios = <0x0d 0x08 0x01>;
 			function = "wlan";
 			default-state = "off";
 		};
 
-		led5 {
+		wps_led: led5 {
 			label = "Wps";
 			gpios = <0x0d 0x09 0x01>;
 			function = "wps";
