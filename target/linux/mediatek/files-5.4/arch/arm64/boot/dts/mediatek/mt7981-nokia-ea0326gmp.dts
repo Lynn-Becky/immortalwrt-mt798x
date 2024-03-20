@@ -1,4 +1,5 @@
 /dts-v1/;
+#include "mt7981.dtsi"
 
 / {
 	model = "NOKIA EA0326GMP";
