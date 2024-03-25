@@ -163,6 +163,8 @@
 		compatible = "mediatek,eth-mac";
 		reg = <0>;
 		phy-mode = "2500base-x";
+		phandle = <0x14>;
+
 
 		fixed-link {
 			speed = <2500>;
@@ -172,51 +174,41 @@
 	};
 
 	gmac1: mac@1 {
-		compatible = "mediatek,eth-mac";
-		reg = <1>;
-		phy-mode = "2500base-x";
-
-		fixed-link {
-			speed = <2500>;
-			full-duplex;
-			pause;
-		};
+			compatible = "mediatek,eth-mac";
+			reg = <1>;
+			phy-mode = "gmii";
+			phy-handle = <0x12>;
 	};
 
-	mdio: mdio-bus {
-		#address-cells = <1>;
-		#size-cells = <0>;
-	};
+    mdio: mdio-bus {
+            #address-cells = <1>;
+            #size-cells = <0>;
+
+            phy0: ethernet-phy@0 {
+                    compatible = "ethernet-phy-id03a2.9461";
+                    reg = <0>;
+                    phy-mode = "gmii";
+                    nvmem-cells = <0x13>;
+                    nvmem-cell-names = "phy-cal-data";
+					phandle = <0x12>;
+                };
 };
 
 &gsw {
-	mediatek,mdio = <&mdio>;
-	mediatek,mdio_master_pinmux = <0>;
-	reset-gpios = <&pio 39 0>;
-	interrupt-parent = <&pio>;
-	interrupts = <38 IRQ_TYPE_LEVEL_HIGH>;
-	status = "okay";
+	    compatible = "mediatek,mt7531";
+		reg = <0x1f>;
+		reset-gpios = <0x0d 0x27 0x00>;
 
-	port5: port@5 {
-		compatible = "mediatek,mt753x-port";
-		reg = <5>;
-		phy-mode = "sgmii";
+	port@6 {
+		reg = <0x06>;
+		label = "cpu";
+		ethernet = <0x14>;
+		phy-mode = "2500base-x";
 
 		fixed-link {
-			speed = <2500>;
+		    speed = <0x9c4>;
 			full-duplex;
-		};
-	};
-
-	port6: port@6 {
-		compatible = "mediatek,mt753x-port";
-		mediatek,ssc-on;
-		reg = <6>;
-		phy-mode = "sgmii";
-
-		fixed-link {
-			speed = <2500>;
-			full-duplex;
+			pause;
 		};
 	};
 };
