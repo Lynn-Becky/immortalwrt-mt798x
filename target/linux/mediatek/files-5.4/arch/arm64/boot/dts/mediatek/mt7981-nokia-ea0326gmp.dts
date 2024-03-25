@@ -195,7 +195,7 @@
                     nvmem-cell-names = "phy-cal-data";
 					phandle = <0x12>;
                 };
-	}
+	};
 };
 
 &gsw {
