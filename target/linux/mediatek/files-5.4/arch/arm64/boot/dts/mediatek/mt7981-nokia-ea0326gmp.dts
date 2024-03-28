@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+
 /dts-v1/;
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/input/input.h>
@@ -5,82 +7,71 @@
 #include "mt7981.dtsi"
 
 / {
-	model = "NOKIA EA0326GMP";
+	model = "Nokia EA0326GMP";
 	compatible = "nokia,ea0326gmp", "mediatek,mt7981";
 
 	aliases {
 		led-boot = &power_led;
+		led-running = &power_led;
 		led-failsafe = &power_led;
-		led-running = &lan_led;
-		led-upgrade = &lan_led;
+		led-upgrade = &power_led;
 	};
 
 	chosen {
 		bootargs = "console=ttyS0,115200n1 loglevel=8 earlycon=uart8250,mmio32,0x11002000";
 	};
 
-	memory {
+	memory@40000000 {
 		reg = <0 0x40000000 0 0x10000000>;
 	};
 
 	gpio-keys {
 		compatible = "gpio-keys";
 
-		reset {
+		button-reset {
 			label = "reset";
-			linux,code = <0x198>;
-			gpios = <0x0d 0x01 0x01>;
+			linux,code = <KEY_RESTART>;
+			gpios = <&pio 1 GPIO_ACTIVE_LOW>;
 		};
 
-		wps {
+		button-wps {
 			label = "wps";
-			linux,code = <0x211>;
-			gpios = <0x0d 0x00 0x01>;
+			linux,code = <KEY_WPS_BUTTON>;
+			gpios = <&pio 0 GPIO_ACTIVE_HIGH>;
 		};
 	};
 
-	leds {
+	gpio-leds {
 		compatible = "gpio-leds";
 
-		power_led: led0 {
-			label = "Power";
-			gpios = <0x0d 0x04 0x01>;
-			function = "power";
-			default-state = "on";
+		power_led: led-0 {
+			label = "green:power";
+			gpios = <&pio 4 GPIO_ACTIVE_LOW>;
 		};
 
-		internet_led: led1 {
-			label = "Internet";
-			gpios = <0x0d 0x05 0x01>;
-			function = "wan";
-			default-state = "off";
+		led-1 {
+			label = "green:wan";
+			gpios = <&pio 5 GPIO_ACTIVE_LOW>;
 		};
 
-		wan_led: led2 {
-			label = "WanErr";
-			gpios = <0x0d 0x06 0x01>;
-			default-state = "off";
+		led-2 {
+			label = "red:wan";
+			gpios = <&pio 6 GPIO_ACTIVE_LOW>;
 		};
 
-		lan_led: led3 {
-			label = "Lan";
-			gpios = <0x0d 0x07 0x01>;
-			function = "lan";
-			default-state = "off";
+		led-3 {
+			label = "green:lan";
+			gpios = <&pio 7 GPIO_ACTIVE_LOW>;
 		};
 
-		wifi_led: led4 {
-			label = "Wifi";
-			gpios = <0x0d 0x08 0x01>;
-			function = "wlan";
-			default-state = "off";
+		led-4 {
+			label = "green:wlan";
+			gpios = <&pio 8 GPIO_ACTIVE_LOW>;
 		};
 
-		wps_led: led5 {
-			label = "Wps";
-			gpios = <0x0d 0x09 0x01>;
-			function = "wps";
-			default-state = "off";
+		led-5 {
+			label = "green:wps";
+			gpios = <&pio 9 GPIO_ACTIVE_LOW>;
 		};
 	};
 
@@ -107,8 +98,7 @@
 
 			partition@0 {
 				label = "BL2";
-				reg = <0x00 0x100000>;
-				read-only;
+				reg = <0x0 0x100000>;
 			};
 
 			partition@100000 {
@@ -137,19 +127,11 @@
 			};
 
 			partition@980000 {
-				label = "Aos-net";
-				reg = <0x980000 0xc00000>;
-			};
-
-			partition@1580000 {
-				label = "bvasPlugin";
-				reg = <0x1580000 0xc00000>;
-			};
-
-			partition@2180000 {
 				label = "ubi";
-				reg = <0x2180000 0x5680000>;
+				reg = <0x980000 0x6e00000>;
 			};
+
+			/* Leave last 8.5 MiB for NMBM bad block table */
 		};
 	};
 };
@@ -170,15 +152,15 @@
 	};
 
 	gmac1: mac@1 {
-			compatible = "mediatek,eth-mac";
-			reg = <1>;
-			phy-mode = "gmii";
+		compatible = "mediatek,eth-mac";
+		reg = <1>;
+		phy-mode = "gmii";
 		phy-handle = <&phy0>;
 	};
 
-    mdio: mdio-bus {
-            #address-cells = <1>;
-            #size-cells = <0>;
+	mdio: mdio-bus {
+		#address-cells = <1>;
+		#size-cells = <0>;
 
 		phy0: ethernet-phy@0 {
 			compatible = "ethernet-phy-id03a2.9461";
@@ -212,10 +194,10 @@
 };
 
 &hnat {
-	mtketh-wan = "eth1";
-	mtketh-lan = "eth0";
-	mtketh-max-gmac = <2>;
-	status = "okay";
+        mtketh-wan = "eth1";
+        mtketh-lan = "eth0";
+        mtketh-max-gmac = <2>;
+        status = "okay";
 };
 
 &spi0 {
@@ -223,14 +205,25 @@
 	pinctrl-0 = <&spi0_flash_pins>;
 	status = "okay";
 
-	spi_nand: spi_nand@0 {
+	spi_nand: flash@0 {
 		#address-cells = <1>;
 		#size-cells = <1>;
 		compatible = "spi-nand";
 		reg = <0>;
 		spi-max-frequency = <52000000>;
+
+		spi-cal-enable;
+		spi-cal-mode = "read-data";
+		spi-cal-datalen = <7>;
+		spi-cal-data = /bits/ 8 <0x53 0x50 0x49 0x4E 0x41 0x4E 0x44>;
+		spi-cal-addrlen = <5>;
+		spi-cal-addr = /bits/ 32 <0x0 0x0 0x0 0x0 0x0>;
+
 		spi-tx-bus-width = <4>;
 		spi-rx-bus-width = <4>;
+		mediatek,nmbm;
+		mediatek,bmt-max-ratio = <1>;
+		mediatek,bmt-max-reserved-blocks = <64>;
 	};
 };
 
@@ -243,14 +236,14 @@
 
 		conf-pu {
 			pins = "SPI0_CS", "SPI0_HOLD", "SPI0_WP";
-			drive-strength = <MTK_DRIVE_8mA>;
-			bias-pull-up = <MTK_PUPD_SET_R1R0_11>;
+			drive-strength = <8>;
+			bias-pull-up = <103>;
 		};
 
 		conf-pd {
 			pins = "SPI0_CLK", "SPI0_MOSI", "SPI0_MISO";
-			drive-strength = <MTK_DRIVE_8mA>;
-			bias-pull-down = <MTK_PUPD_SET_R1R0_11>;
+			drive-strength = <8>;
+			bias-pull-down = <103>;
 		};
 	};
 };
