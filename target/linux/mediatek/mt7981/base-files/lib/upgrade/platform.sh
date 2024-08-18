@@ -254,6 +254,7 @@ platform_check_image() {
 	*konka,komi-a31* |\
 	*nokia,ea0326gmp* |\
 	nradio,wt9103 |\
+	*nokia,ea0326gmp* |\
 	*snand* |\
 	*emmc*)
 		# tar magic `ustar`

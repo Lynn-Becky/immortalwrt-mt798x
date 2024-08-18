@@ -31,20 +31,10 @@ mediatek_setup_interfaces()
 	ruijie,rg-x60-pro*)
 		ucidef_set_interfaces_lan_wan "lan0 lan1 lan2 lan3" eth1
 		;;
- 	glinet,gl-mt6000)
- 		ucidef_set_interfaces_lan_wan "lan1 lan2 lan3 lan4 lan5" eth1
- 		;;
-	jdcloud,re-cp-03)
-		ucidef_set_interfaces_lan_wan "lan1 lan2 lan3 lan4" "eth1"
-		;;
- 	tplink,tl-xdr6086)
- 		ucidef_set_interfaces_lan_wan "lan1 lan2" eth1
- 		;;
- 	tplink,tl-xdr6088)
- 		ucidef_set_interfaces_lan_wan "lan1 lan2 lan3 lan4 lan5" eth1
- 		;;
 	*)
-		ucidef_set_interfaces_lan_wan "lan0 lan1 lan2 lan3 lan4 lan5" eth1
+		ucidef_set_interfaces_lan_wan "eth0" "eth1"
+		ucidef_add_switch "switch0" \
+			"0:lan" "1:lan" "2:lan" "3:lan" "4:lan" "5:lan" "6u@eth0"
 		;;
 	esac
 }

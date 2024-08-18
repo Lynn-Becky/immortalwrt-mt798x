@@ -396,6 +396,38 @@ define Device/xiaomi_redmi-router-ax6000-stock
 endef
 TARGET_DEVICES += xiaomi_redmi-router-ax6000-stock
 
+define Device/ruijie-rg-x60-pro-uboot
+  DEVICE_VENDOR := Ruijie
+  DEVICE_MODEL := Ruijie RG-X60 Pro(uboot layout)
+  DEVICE_DTS := mt7986a-ruijie-rg-x60-pro-uboot
+  DEVICE_DTS_DIR := $(DTS_DIR)/mediatek
+  SUPPORTED_DEVICES := ruijie,rg-x60-pro-uboot
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  KERNEL_IN_UBI := 1
+  IMAGES += factory.bin
+  IMAGE/factory.bin := append-ubi | check-size $$$$(IMAGE_SIZE)
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += ruijie-rg-x60-pro-uboot
+
+define Device/ruijie-rg-x60-pro
+  DEVICE_VENDOR := Ruijie
+  DEVICE_MODEL := Ruijie RG-X60 Pro
+  DEVICE_DTS := mt7986a-ruijie-rg-x60-pro
+  DEVICE_DTS_DIR := $(DTS_DIR)/mediatek
+  SUPPORTED_DEVICES := ruijie,rg-x60-pro
+  UBINIZE_OPTS := -E 5
+  BLOCKSIZE := 128k
+  PAGESIZE := 2048
+  KERNEL_IN_UBI := 1
+  IMAGES += factory.bin
+  IMAGE/factory.bin := append-ubi | check-size $$$$(IMAGE_SIZE)
+  IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
+endef
+TARGET_DEVICES += ruijie-rg-x60-pro
+
 define Device/BPI-R3MINI-NAND
   DEVICE_VENDOR := Banana Pi
   DEVICE_MODEL := Banana Pi R3MINI
@@ -444,7 +476,8 @@ define Device/BPI-R3MINI-EMMC
   DEVICE_DTS_DIR := $(DTS_DIR)/mediatek
   DEVICE_PACKAGES := $(MT7986_USB_PKGS) $(MT7986_WWAN_PKGS) \
         kmod-phy-air-en8811h bpir3_mini-properties pciutils \
-        f2fsck losetup mkf2fs f2fs-tools kmod-fs-f2fs kmod-mmc
+        f2fsck losetup mkf2fs f2fs-tools kmod-fs-f2fs kmod-mmc \
+	luci-app-ksmbd luci-i18n-ksmbd-zh-cn ksmbd-utils 
   SUPPORTED_DEVICES := bananapi,bpi-r3mini-emmc
   IMAGE/sysupgrade.bin := sysupgrade-tar | append-metadata
 endef
